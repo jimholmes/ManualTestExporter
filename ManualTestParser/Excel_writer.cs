@@ -17,29 +17,29 @@ namespace ManualTestParser
         {
             if (descriptions.Count <= 0|| 
                 fileLocation==null ||
-                !IsValidFileLocation(fileLocation))
+                !is_valid_file_location(fileLocation))
             {
                 throw new ArgumentException("Check descriptions and fileLocation params. They've got to contain stuff.");
             }
             this.descriptions = descriptions;
             this.fileLocation = fileLocation;
 
-            CreateOutputFile();
+            create_output_file();
         }
 
-        private void CreateOutputFile()
+        private void create_output_file()
         {
-            FileInfo newFile = Prepare_new_file();
+            FileInfo newFile = prepare_new_file();
 			
             using (ExcelPackage package = new ExcelPackage(newFile))
             {
                 ExcelWorksheet sheet = package.Workbook.Worksheets.Add("Sheet");
-                AddHeaders(sheet);
-                AddDescriptionRows(sheet);
+                add_header_row(sheet);
+                add_description_rows(sheet);
             }
         }
 
-        private FileInfo Prepare_new_file()
+        private FileInfo prepare_new_file()
         {
             FileInfo newFile = new FileInfo(fileLocation);
 
@@ -50,7 +50,7 @@ namespace ManualTestParser
             return newFile;
         }
 
-        private bool IsValidFileLocation(string fileLocation)
+        private bool is_valid_file_location(string fileLocation)
         {
             FileInfo file = new FileInfo(fileLocation);
             DirectoryInfo dir = new DirectoryInfo(file.DirectoryName);
@@ -61,7 +61,7 @@ namespace ManualTestParser
             return true;
         }
 
-        private void AddDescriptionRows(ExcelWorksheet sheet)
+        private void add_description_rows(ExcelWorksheet sheet)
         {
             //int currentRow = 2; //start past header
             //foreach (var step in descriptions)
@@ -71,7 +71,7 @@ namespace ManualTestParser
             //}
         }
 
-        private void AddHeaders(ExcelWorksheet sheet)
+        private void add_header_row(ExcelWorksheet sheet)
         {
             sheet.Cells[1, 1].Value = "Step";
             sheet.Cells[1, 2].Value = "Description";
