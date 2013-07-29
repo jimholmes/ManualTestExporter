@@ -39,15 +39,15 @@ namespace ManualTestParser
                 throw new ArgumentException("Error parsing input data. Are you sure you're using a JSON format file?");
             }
 
-            ValidateTestType();
+            validiate_test_type();
             if (isValid)
             {
-                LoadDescriptions();                
+                load_descriptions();                
             }
             
         }
 
-        private void LoadDescriptions()
+        private void load_descriptions()
         {
             var data =
                       from p in test["__value"]["Steps"]["__value"].Children()["__value"]
@@ -68,7 +68,7 @@ namespace ManualTestParser
             }
         }   
 
-        private void ValidateTestType()
+        private void validiate_test_type()
         {
             if (test["__type"].ToString().Equals("ArtOfTest.WebAii.Design.ProjectModel.Test") &&
                 test["__value"]["IsManual"].ToString().Equals("true", StringComparison.CurrentCultureIgnoreCase))
