@@ -32,16 +32,22 @@ namespace ManualTestParser
         }
 
         [Test]
-        public void custom_description_shows_in_descriptions()
+        public void custom_description_shows_with_correct_description()
         {
-            Assert.IsTrue(reader.Descriptions.Contains("bbb"));
+            var custom = reader.Descriptions.Where(step => step.Description.Contains("aaaa"));
+            
+            Assert.IsTrue(custom.Count() == 1);
+            Assert.IsTrue(custom.ElementAt(0).Custom.Equals("bbb"));
         }
 
         [Test]
         public void custom_description_of_null_doesnt_show_in_descriptions()
         {
-            Assert.IsFalse(reader.Descriptions.Contains("null"));
-        }       
+            var custom = reader.Descriptions.Where(step => step.Description.Contains("ccc"));
+
+            Assert.IsTrue(custom.Count() == 1);
+            Assert.IsTrue(custom.ElementAt(0).Custom.Equals(""));
+        }   
     }
 
 }

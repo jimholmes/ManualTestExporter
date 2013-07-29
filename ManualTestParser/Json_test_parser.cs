@@ -12,9 +12,9 @@ namespace ManualTestParser
     {
         private JObject test;
         private bool isValid;
-        private IList<string> descriptions;
+        private IList<Step> descriptions;
 
-        public IList<string> Descriptions
+        public IList<Step> Descriptions
         {
             get { return descriptions; }
         }
@@ -28,7 +28,7 @@ namespace ManualTestParser
         {
             isValid = false;
             test = new JObject();
-            descriptions = new List<string>();
+            descriptions = new List<Step>();
 
             try
             {
@@ -54,13 +54,19 @@ namespace ManualTestParser
                       select new { Description = p["Description"], Custom = p["CustomDescription"] };
             foreach (var item in data)
             {
-                descriptions.Add(item.Description.ToString());
+                Step step = new Step();
+                string listDescr = item.Description.ToString();
+                if (listDescr != null)
+                {
+                    step.Description = listDescr;
+                }
                 if (item.Custom != null)
                 {
-                    descriptions.Add(item.Custom.ToString());
+                    step.Custom = item.Custom.ToString();
                 }
+                descriptions.Add(step);
             }
-        }
+        }   
 
         private void ValidateTestType()
         {
@@ -69,8 +75,23 @@ namespace ManualTestParser
             {
                 isValid = true;
             }
-        }
+        }   
+    }
 
-        
+    public class Step
+    {
+        private string description;
+        public string Description
+        {
+            get { return description; }
+            set { description = value; }
+        }
+        private string custom;
+
+        public string Custom
+        {
+            get { return custom; }
+            set { custom = value; }
+        }
     }
 }   

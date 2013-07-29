@@ -15,7 +15,9 @@ namespace ManualTestParser
 
         public Excel_writer(IList<string>descriptions, string fileLocation)
         {
-            if (descriptions.Count <= 0|| fileLocation==null)
+            if (descriptions.Count <= 0|| 
+                fileLocation==null ||
+                !IsValidFileLocation(fileLocation))
             {
                 throw new ArgumentException("Check descriptions and fileLocation params. They've got to contain stuff.");
             }
@@ -27,19 +29,7 @@ namespace ManualTestParser
 
         private void CreateOutputFile()
         {
-            if (! IsValidFileLocation(fileLocation))
-            {
-                throw new FileNotFoundException("Invalid path");
-            }
-            FileInfo newFile = new FileInfo(fileLocation);
-
-
-            try 
-            {
-                newFile.Delete();
-            } catch { FileNotFoundException e;} //Just delete, swallow exception. Avoids races
-
-            newFile = new FileInfo(fileLocation);
+            FileInfo newFile = Prepare_new_file();
 			
             using (ExcelPackage package = new ExcelPackage(newFile))
             {
@@ -47,6 +37,17 @@ namespace ManualTestParser
                 AddHeaders(sheet);
                 AddDescriptionRows(sheet);
             }
+        }
+
+        private FileInfo Prepare_new_file()
+        {
+            FileInfo newFile = new FileInfo(fileLocation);
+
+            try { newFile.Delete(); }
+            catch { FileNotFoundException e; } //Just delete, swallow exception. Avoids races
+
+            newFile = new FileInfo(fileLocation);
+            return newFile;
         }
 
         private bool IsValidFileLocation(string fileLocation)
