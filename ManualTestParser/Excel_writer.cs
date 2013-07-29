@@ -27,7 +27,12 @@ namespace ManualTestParser
 
         private void CreateOutputFile()
         {
+            if (! IsValidFileLocation(fileLocation))
+            {
+                throw new FileNotFoundException("Invalid path");
+            }
             FileInfo newFile = new FileInfo(fileLocation);
+
 
             try 
             {
@@ -44,14 +49,25 @@ namespace ManualTestParser
             }
         }
 
+        private bool IsValidFileLocation(string fileLocation)
+        {
+            FileInfo file = new FileInfo(fileLocation);
+            DirectoryInfo dir = new DirectoryInfo(file.DirectoryName);
+            if (! dir.Exists)
+            {
+                throw new FileNotFoundException();
+            }
+            return true;
+        }
+
         private void AddDescriptionRows(ExcelWorksheet sheet)
         {
-            int currentRow = 2; //start past header
-            foreach (var step in descriptions)
-            {
-                sheet.Cells[currentRow, 1].Value = currentRow;
-                sheet.Cells[currentRow,2].Value = step.
-            }
+            //int currentRow = 2; //start past header
+            //foreach (var step in descriptions)
+            //{
+            //    sheet.Cells[currentRow, 1].Value = currentRow;
+            //    sheet.Cells[currentRow,2].Value = step.
+            //}
         }
 
         private void AddHeaders(ExcelWorksheet sheet)
