@@ -34,7 +34,8 @@ namespace ManualTestParser
         [Test]
         public void custom_description_shows_with_correct_description()
         {
-            var custom = reader.Descriptions.Where(step => step.Description.Contains("aaaa"));
+            var custom = reader.Descriptions.Where(step => 
+                step.Description.Contains("aaaa"));
             
             Assert.IsTrue(custom.Count() == 1);
             Assert.IsTrue(custom.ElementAt(0).Custom.Equals("bbb"));
@@ -43,7 +44,8 @@ namespace ManualTestParser
         [Test]
         public void custom_description_of_null_doesnt_show_in_descriptions()
         {
-            var custom = reader.Descriptions.Where(step => step.Description.Contains("ccc"));
+            var custom = reader.Descriptions.Where(step => 
+                step.Description.Contains("ccc"));
 
             Assert.IsTrue(custom.Count() == 1);
             Assert.IsTrue(custom.ElementAt(0).Custom.Equals(""));
