@@ -52,6 +52,7 @@
     <Compile Include="Excel_writer.cs" />
     <Compile Include="Json_test_parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Step.cs" />
     <Compile Include="Test_data.cs" />
     <Compile Include="When_working_with_invalid_test_file_input.cs" />
     <Compile Include="When_working_with_valid_json.cs" />

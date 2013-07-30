@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,21 @@ namespace ManualTestParser
             get { return isValid; }
         }
 
+        public Json_test_parser(FileInfo jsonFile)
+        {
+            if (!jsonFile.Exists)
+            {
+                throw new FileNotFoundException("File doesn't exist! " + jsonFile.FullName);
+            }
+            StreamReader reader = new StreamReader(jsonFile.FullName);
+            string test_json = reader.ReadToEnd();
+            parse_json_string(test_json);
+        }
         public Json_test_parser(string test_json)
+        {
+            parse_json_string(test_json);
+        }
+        private void parse_json_string(string test_json)
         {
             isValid = false;
             test = new JObject();
@@ -43,8 +58,7 @@ namespace ManualTestParser
             if (isValid)
             {
                 load_descriptions();                
-            }
-            
+            }            
         }
 
         private void load_descriptions()
@@ -70,28 +84,14 @@ namespace ManualTestParser
 
         private void validiate_test_type()
         {
-            if (test["__type"].ToString().Equals("ArtOfTest.WebAii.Design.ProjectModel.Test") &&
-                test["__value"]["IsManual"].ToString().Equals("true", StringComparison.CurrentCultureIgnoreCase))
+            if (test["__type"].ToString().
+                Equals("ArtOfTest.WebAii.Design.ProjectModel.Test") 
+                &&
+                test["__value"]["IsManual"].ToString().
+                Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
                 isValid = true;
             }
         }   
     }
-
-    public class Step
-    {
-        private string description;
-        public string Description
-        {
-            get { return description; }
-            set { description = value; }
-        }
-        private string custom;
-
-        public string Custom
-        {
-            get { return custom; }
-            set { custom = value; }
-        }
-    }
-}   
+}

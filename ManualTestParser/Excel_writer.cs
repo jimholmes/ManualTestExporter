@@ -36,6 +36,7 @@ namespace ManualTestParser
                 ExcelWorksheet sheet = package.Workbook.Worksheets.Add("Sheet");
                 add_header_row(sheet);
                 add_description_rows(sheet);
+                package.Save();
             }
         }
 
