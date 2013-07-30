@@ -45,7 +45,7 @@ namespace ManualTestParser
             FileInfo newFile = new FileInfo(fileLocation);
 
             try { newFile.Delete(); }
-            catch { FileNotFoundException e; } //Just delete, swallow exception. Avoids races
+            catch ( FileNotFoundException e ) {/*Avoids races, swallow*/} 
 
             newFile = new FileInfo(fileLocation);
             return newFile;
