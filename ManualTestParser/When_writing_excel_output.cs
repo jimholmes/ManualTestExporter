@@ -15,8 +15,9 @@ namespace ManualTestParser
         [ExpectedException(typeof(FileNotFoundException))]
         public void invalid_path_throws_exception()
         {
-            IList<string>descrs = new List<string>();
-            descrs.Add("Foo");
+            IList<Step>descrs = new List<Step>();
+            Step item = new Step();
+            descrs.Add(item);
             Excel_writer writer = new Excel_writer(descrs, Test_data.invalid_file);
         }
 

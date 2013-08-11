@@ -27,13 +27,32 @@ namespace ManualTestParser
 
         public Json_test_parser(FileInfo jsonFile)
         {
+            barf_if_file_is_not_present(jsonFile);
+            add_filename_to_first_descriptions_item(jsonFile);
+            string test_json = read_json_file(jsonFile);
+            parse_json_string(test_json);
+        }
+
+        private static string read_json_file(FileInfo jsonFile)
+        {
+            StreamReader reader = new StreamReader(jsonFile.FullName);
+            string test_json = reader.ReadToEnd();
+            return test_json;
+        }
+
+        private void add_filename_to_first_descriptions_item(FileInfo jsonFile)
+        {
+            Step title = new Step();
+            title.Description = jsonFile.FullName;
+            descriptions.Add(title);
+        }
+
+        private static void barf_if_file_is_not_present(FileInfo jsonFile)
+        {
             if (!jsonFile.Exists)
             {
                 throw new FileNotFoundException("File doesn't exist! " + jsonFile.FullName);
             }
-            StreamReader reader = new StreamReader(jsonFile.FullName);
-            string test_json = reader.ReadToEnd();
-            parse_json_string(test_json);
         }
         public Json_test_parser(string test_json)
         {

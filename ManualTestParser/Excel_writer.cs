@@ -10,10 +10,12 @@ namespace ManualTestParser
 {
     class Excel_writer
     {
-        IList<string>descriptions;
+        IList<Step>descriptions;
         string fileLocation;
+        const int Title_row = 1;
+        const int Header_row = 2;
 
-        public Excel_writer(IList<string>descriptions, string fileLocation)
+        public Excel_writer(IList<Step>descriptions, string fileLocation)
         {
             if (descriptions.Count <= 0|| 
                 fileLocation==null ||
@@ -34,10 +36,17 @@ namespace ManualTestParser
             using (ExcelPackage package = new ExcelPackage(newFile))
             {
                 ExcelWorksheet sheet = package.Workbook.Worksheets.Add("Sheet");
+                add_title_block(sheet);
                 add_header_row(sheet);
                 add_description_rows(sheet);
                 package.Save();
             }
+        }
+
+        private void add_title_block(ExcelWorksheet sheet)
+        {
+            sheet.Cells[Title_row, 1].Value = descriptions[0].Description;
+            descriptions.RemoveAt(0);
         }
 
         private FileInfo prepare_new_file()
@@ -64,19 +73,23 @@ namespace ManualTestParser
 
         private void add_description_rows(ExcelWorksheet sheet)
         {
-            //int currentRow = 2; //start past header
-            //foreach (var step in descriptions)
-            //{
-            //    sheet.Cells[currentRow, 1].Value = currentRow;
-            //    sheet.Cells[currentRow,2].Value = step.
-            //}
+            int currentRow = Header_row+1; //start past header
+            foreach (var step in descriptions)
+            {
+                sheet.Cells[currentRow, 1].Value = currentRow;
+                sheet.Cells[currentRow, 2].Value = step.Description;
+                if (step.Custom != null)
+                {
+                    sheet.Cells[currentRow, 3].Value = step.Custom;
+                }
+            }
         }
 
         private void add_header_row(ExcelWorksheet sheet)
         {
-            sheet.Cells[1, 1].Value = "Step";
-            sheet.Cells[1, 2].Value = "Description";
-            sheet.Cells[1, 3].Value = "Custom Description";
+            sheet.Cells[Header_row, 1].Value = "Step";
+            sheet.Cells[Header_row, 2].Value = "Description";
+            sheet.Cells[Header_row, 3].Value = "Custom Description";
         }
 
 
